@@ -11,12 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tbl_reserva")
+@NamedQueries({
+	@NamedQuery(name="Reserva.listing", query = "SELECT reserva FROM Reserva reserva"),
+	@NamedQuery(name="Reserva.findByCode", query = "SELECT reserva FROM Reserva reserva WHERE reserva.id = :code")
+})
 public class Reserva {
 
 	@Id
@@ -24,8 +30,6 @@ public class Reserva {
 	@Column(name = "res_codigo")
 	private Long codigo;
 	
-	@Column(name = "res_preco", precision = 7, scale = 2, nullable = false)
-	private BigDecimal preco;
 	
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "res_data", nullable = false)
@@ -44,20 +48,24 @@ public class Reserva {
 	@JoinColumn(name = "tbl_quarto_qua_codigo", referencedColumnName = "qua_codigo", nullable = false)
 	private Quarto quarto;
 
+	public Reserva(){
+		
+	}
+	
+	public Reserva(Date data, Cliente cliente, Funcionario funcionario, Quarto quarto) {
+		super();
+		this.data = data;
+		this.cliente = cliente;
+		this.funcionario = funcionario;
+		this.quarto = quarto;
+	}
+
 	public Long getCodigo() {
 		return codigo;
 	}
 
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
-	}
-
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
 	}
 
 	public Date getData() {
@@ -91,6 +99,13 @@ public class Reserva {
 	public void setQuarto(Quarto quarto) {
 		this.quarto = quarto;
 	}
+
+	@Override
+	public String toString() {
+		return "Reserva [codigo=" + codigo + ", data=" + data + ", cliente=" + cliente
+				+ ", funcionario=" + funcionario + ", quarto=" + quarto + "]";
+	}
+	
 	
 	
 }

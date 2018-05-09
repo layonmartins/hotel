@@ -11,12 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tbl_aluguel")
+@NamedQueries({
+	@NamedQuery(name="Aluguel.listing", query = "SELECT aluguel FROM Aluguel aluguel"),
+	@NamedQuery(name="Aluguel.findByCode", query = "SELECT aluguel FROM Aluguel aluguel WHERE aluguel.id = :code")
+})
 public class Aluguel {
 
 	@Id
@@ -42,6 +48,19 @@ public class Aluguel {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tbl_quarto_qua_codigo", referencedColumnName = "qua_codigo", nullable = false)
 	private Quarto quarto;
+
+	public Aluguel(){
+		
+	}
+	
+	public Aluguel(Date data, BigDecimal valor_total, Funcionario funcionario, Cliente cliente, Quarto quarto) {
+		super();
+		this.data = data;
+		this.valor_total = valor_total;
+		this.funcionario = funcionario;
+		this.cliente = cliente;
+		this.quarto = quarto;
+	}
 
 	public Long getId() {
 		return id;
@@ -90,5 +109,13 @@ public class Aluguel {
 	public void setQuarto(Quarto quarto) {
 		this.quarto = quarto;
 	}
+
+	@Override
+	public String toString() {
+		return "Aluguel [id=" + id + ", data=" + data + ", valor_total=" + valor_total + ", funcionario=" + funcionario
+				+ ", cliente=" + cliente + ", quarto=" + quarto + "]";
+	}
+	
+	
 
 }

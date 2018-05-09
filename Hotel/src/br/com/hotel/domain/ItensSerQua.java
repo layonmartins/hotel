@@ -8,16 +8,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_intes_ser_qua")
+@NamedQueries({
+	@NamedQuery(name="ItensSerQua.listing", query = "SELECT itensSerQua FROM ItensSerQua itensSerQua"),
+	@NamedQuery(name="ItensSerQua.findByCode", query = "SELECT itensSerQua FROM ItensSerQua itensSerQua WHERE itensSerQua.id = :code")
+})
 public class ItensSerQua {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ite_codigo")
-	private Long codigo;
+	private Long id;
 
 	@Column(name = "ite_obs", length = 100)
 	private String obs;
@@ -30,12 +36,24 @@ public class ItensSerQua {
 	@JoinColumn(name = "tbl_servico_ser_codigo", referencedColumnName = "ser_codigo", nullable = false)
 	private Servico servico;
 
+	public ItensSerQua(){
+		
+	}
+	
+	public ItensSerQua(String obs, Aluguel aluguel, Servico servico) {
+		super();
+		this.obs = obs;
+		this.aluguel = aluguel;
+		this.servico = servico;
+	}
+
+
 	public Long getCodigo() {
-		return codigo;
+		return id;
 	}
 
 	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
+		this.id = codigo;
 	}
 
 	public String getObs() {
@@ -62,4 +80,10 @@ public class ItensSerQua {
 		this.servico = servico;
 	}
 
+	@Override
+	public String toString() {
+		return "ItensSerQua [id=" + id + ", obs=" + obs + ", aluguel=" + aluguel + ", servico=" + servico + "]";
+	}
+
+	
 }

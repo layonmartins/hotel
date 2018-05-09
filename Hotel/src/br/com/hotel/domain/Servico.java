@@ -7,10 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_servico")
+@NamedQueries({
+	@NamedQuery(name="Servico.listing", query = "SELECT servico FROM Servico servico"),
+	@NamedQuery(name="Servico.findByCode", query = "SELECT servico FROM Servico servico WHERE servico.id = :code")
+})
 public class Servico {
 
 	@Id
@@ -26,6 +32,17 @@ public class Servico {
 
 	@Column(name = "ser_preco", precision = 7, scale = 2, nullable = false)
 	private BigDecimal preco;
+
+	public Servico(){
+		
+	}
+	
+	public Servico(String nome, String descricao, BigDecimal preco) {
+		super();
+		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = preco;
+	}
 
 	public Long getId() {
 		return id;
@@ -58,5 +75,12 @@ public class Servico {
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
 	}
+
+	@Override
+	public String toString() {
+		return "Servico [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + "]";
+	}
+	
+	
 
 }

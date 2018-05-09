@@ -5,10 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_cliente")
+@NamedQueries({
+	@NamedQuery(name="Cliente.listing", query = "SELECT cliente FROM Cliente cliente"),
+	@NamedQuery(name="Cliente.findByCode", query = "SELECT cliente FROM Cliente cliente WHERE cliente.id = :code")
+})
 public class Cliente {
 
 	@Id
@@ -24,6 +30,17 @@ public class Cliente {
 
 	@Column(name = "cli_profissao", length = 50)
 	private String profissao;
+
+	public Cliente() {
+		
+	}
+
+	public Cliente(String nome, String cpf, String profissao) {
+		super();
+		this.nome = nome;
+		this.cpf = cpf;
+		this.profissao = profissao;
+	}
 
 	public Long getId() {
 		return id;
@@ -56,5 +73,12 @@ public class Cliente {
 	public void setProfissao(String profissao) {
 		this.profissao = profissao;
 	}
+
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", profissao=" + profissao + "]";
+	}
+	
+	
 
 }

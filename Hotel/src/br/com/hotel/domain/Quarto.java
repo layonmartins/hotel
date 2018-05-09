@@ -7,10 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_quarto")
+@NamedQueries({
+	@NamedQuery(name="Quarto.listing", query = "SELECT quarto FROM Quarto quarto"),
+	@NamedQuery(name="Quarto.findByCode", query = "SELECT quarto FROM Quarto quarto WHERE quarto.id = :code")
+})
 public class Quarto {
 
 	@Id
@@ -44,6 +50,23 @@ public class Quarto {
 
 	@Column(name = "qua_preco", precision = 7, scale = 2, nullable = false)
 	private BigDecimal preco;
+	
+	public Quarto(){
+		
+	}
+
+	public Quarto(String numero, int num_pessoas, boolean ar_condicionado, boolean tv, String descricao, int tamanho, BigDecimal preco) {
+		super();
+		this.numero = numero;
+		this.num_pessoas = num_pessoas;
+		this.ar_condicionado = ar_condicionado;
+		this.tv = tv;
+		this.reservado = false;
+		this.alugado = false;
+		this.descricao = descricao;
+		this.tamanho = tamanho;
+		this.preco = preco;
+	}
 
 	public Long getId() {
 		return id;
@@ -125,4 +148,12 @@ public class Quarto {
 		this.preco = preco;
 	}
 
+	@Override
+	public String toString() {
+		return "Quarto [id=" + id + ", numero=" + numero + ", num_pessoas=" + num_pessoas + ", ar_condicionado="
+				+ ar_condicionado + ", tv=" + tv + ", reservado=" + reservado + ", alugado=" + alugado + ", descricao="
+				+ descricao + ", tamanho=" + tamanho + ", preco=" + preco + "]";
+	}
+
+	
 }
